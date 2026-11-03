@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Mindful Rhythm">
 <meta name="description" content="A peaceful, adjustable breathing pacer with precise timing and a gentle sea-glass visual guide.">
-<title>Mindful Rhythm 3.1 · Find your calm</title>
+<title>Mindful Rhythm 3.2 · Galaxy Pearl</title>
 <style>
 :root {
   color-scheme:light;
@@ -309,6 +309,93 @@ body.is-immersive .control-dock {display:none!important}
   .panel-management-label {font-size:12px}
   .fold-link {font-size:10.5px}
 }
+
+/* Mindful Rhythm 3.2 — living Galaxy Pearl sphere */
+.galaxy-canvas {display:none;position:absolute;inset:0;width:100%;height:100%;border-radius:50%;pointer-events:none}
+.orb-glass {display:none;position:absolute;inset:0;border-radius:50%;pointer-events:none}
+body[data-orb="galaxy"] .scene {height:325px}
+body[data-orb="galaxy"] .scene::before {
+ content:"";position:absolute;width:min(98%,440px);height:100%;
+ background:radial-gradient(ellipse at center,rgba(61,80,139,.30) 0%,rgba(69,90,154,.13) 30%,transparent 69%);
+ filter:blur(9px);pointer-events:none;opacity:.9
+}
+body[data-orb="galaxy"] .aura {
+ width:290px;height:290px;
+ background:radial-gradient(circle,rgba(93,134,215,.29) 0%,rgba(127,91,194,.14) 39%,transparent 71%);
+ filter:blur(20px)
+}
+body[data-orb="galaxy"] .orb {
+ width:256px;height:256px;max-width:77vw;max-height:77vw;
+ overflow:hidden;isolation:isolate;
+ background:radial-gradient(circle at 43% 45%,#4054a4 0%,#152451 52%,#061326 100%);
+ box-shadow:inset 0 0 18px 3px rgba(156,198,255,.45),inset -13px -16px 32px rgba(5,9,29,.68),
+ 0 0 0 1px rgba(197,206,255,.65),0 0 17px rgba(103,145,255,.39),0 18px 40px rgba(21,44,86,.18);
+}
+body[data-orb="galaxy"] .galaxy-canvas,
+body[data-orb="galaxy"] .orb-glass {display:block}
+body[data-orb="galaxy"] .orb-glass {
+ z-index:1;
+ background:
+   radial-gradient(ellipse at 26% 15%,rgba(255,255,255,.42),rgba(255,255,255,.05) 23%,transparent 48%),
+   radial-gradient(circle at 51% 50%,rgba(5,12,35,.38) 0%,rgba(8,16,43,.17) 30%,transparent 47%),
+   radial-gradient(ellipse at 50% 53%,transparent 45%,rgba(5,10,34,.12) 69%,rgba(6,10,32,.58) 99%);
+ box-shadow:inset 3px 5px 6px rgba(241,242,255,.18),inset -9px -15px 23px rgba(3,8,24,.53);
+}
+body[data-orb="galaxy"] .orb::after {
+ inset:2px;border:1px solid rgba(190,206,255,.27);z-index:4;
+ box-shadow:inset 0 0 14px rgba(139,186,255,.2)
+}
+body[data-orb="galaxy"] .orb .phase,
+body[data-orb="galaxy"] .orb .seconds,
+body[data-orb="galaxy"] .orb .small {
+ position:relative;z-index:3;color:#f8f8ff;
+ text-shadow:0 2px 10px rgba(5,12,36,.91),0 0 15px rgba(6,13,38,.88)
+}
+body[data-orb="galaxy"] .orb .phase {font-weight:650;letter-spacing:.1px}
+body[data-orb="galaxy"] .orb .seconds {font-weight:700}
+body[data-orb="galaxy"] .orb .small {opacity:.92}
+.orb-options {display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.orb-option {
+ display:flex;align-items:center;text-align:left;gap:9px;min-height:65px;
+ color:var(--ink);border:1px solid var(--border);background:var(--surface);
+ border-radius:13px;padding:8px;cursor:pointer
+}
+.orb-option[aria-pressed="true"] {outline:2px solid var(--accent);outline-offset:1px}
+.orb-option strong {display:block;font-size:12px;font-weight:690}
+.orb-option small {display:block;margin-top:4px;font-size:10px;color:var(--muted);line-height:1.3}
+.orb-thumbnail {display:block;width:39px;height:39px;flex-shrink:0;border-radius:50%}
+.galaxy-thumb {
+ background:
+ radial-gradient(circle at 45% 50%,#fff6ef 0%,#b8aeed 5%,transparent 15%),
+ conic-gradient(from 80deg at 50% 50%,#142145,#5a73ba,#82c6da,#18224b,#8f7cc4,#23346b,#142145);
+ box-shadow:inset 0 0 9px #09132d,0 0 10px rgba(128,154,235,.34)
+}
+.classic-thumb {
+ background:radial-gradient(circle at 32% 22%,var(--orb-one),var(--orb-two) 34%,var(--orb-three) 68%,var(--orb-four));
+ box-shadow:inset -5px -6px 12px rgba(10,48,52,.18)
+}
+.cosmic-motion-row {margin:17px 0 8px}
+#galaxy-motion-note {min-height:18px}
+body[data-orb="galaxy"].is-immersive {
+ background:radial-gradient(ellipse at 50% 45%,#1b2752 0%,#0e1732 45%,#070f23 100%)
+}
+body[data-orb="galaxy"].is-immersive .scene::before {
+ width:min(95vw,700px);height:min(85svh,700px);
+ background:radial-gradient(circle,rgba(94,112,192,.25),rgba(87,85,169,.09) 46%,transparent 70%)
+}
+@media(max-width:380px) {
+ body[data-orb="galaxy"] .scene {height:291px}
+ body[data-orb="galaxy"] .orb {width:238px;height:238px}
+ .orb-option {padding:6px;gap:6px}.orb-thumbnail {width:33px;height:33px}
+ .orb-option strong {font-size:11px}.orb-option small {font-size:9px}
+}
+@media(max-height:730px) {
+ body[data-orb="galaxy"] .scene {height:265px}
+ body[data-orb="galaxy"] .orb {width:218px;height:218px}
+}
+body[data-orb="classic"] .galaxy-canvas,
+body[data-orb="classic"] .orb-glass {display:none}
+
 </style>
 </head>
 <body>
@@ -330,6 +417,8 @@ body.is-immersive .control-dock {display:none!important}
   <div class="scene" aria-label="Visual breathing guide">
     <div id="aura" class="aura" aria-hidden="true"></div>
     <div id="orb" class="orb" aria-hidden="true">
+      <canvas id="galaxy-canvas" class="galaxy-canvas" width="480" height="480" aria-hidden="true"></canvas>
+      <div class="orb-glass" aria-hidden="true"></div>
       <div id="phase" class="phase">Breathe</div>
       <div id="count" class="seconds">4</div>
       <div class="small">seconds</div>
@@ -429,6 +518,27 @@ body.is-immersive .control-dock {display:none!important}
   <details class="panel section-fold" id="appearance-panel">
     <summary><span class="section-title">Atmosphere & sound</span><span class="subtle">3 color themes · optional tones</span></summary>
     <div class="details-body">
+      <div class="label">Choose your breathing sphere</div>
+      <div class="orb-options" role="group" aria-label="Breathing sphere appearance">
+        <button type="button" class="orb-option active" data-orb-choice="galaxy" aria-pressed="true">
+          <span class="orb-thumbnail galaxy-thumb" aria-hidden="true"></span>
+          <span><strong>Galaxy Pearl</strong><small>Living cosmic spiral</small></span>
+        </button>
+        <button type="button" class="orb-option" data-orb-choice="classic" aria-pressed="false">
+          <span class="orb-thumbnail classic-thumb" aria-hidden="true"></span>
+          <span><strong>Classic</strong><small>Quiet sea-glass glow</small></span>
+        </button>
+      </div>
+      <div class="row-between cosmic-motion-row">
+        <label class="label" for="galaxy-motion">Celestial motion</label>
+        <select class="option-select" id="galaxy-motion" aria-label="Motion inside the galaxy sphere">
+          <option value="gentle">Gentle drift</option>
+          <option value="dream">Dreamlike flow</option>
+          <option value="still">Still galaxy</option>
+        </select>
+      </div>
+      <div id="galaxy-motion-note" class="subtle">Nebula clouds and stardust move quietly beneath the glass.</div>
+      <hr class="separator">
       <div class="label">Choose an atmosphere</div>
       <div class="choice-grid" role="group" aria-label="Color theme">
         <button class="theme-choice" type="button" data-theme-choice="sea" aria-pressed="true"><span class="swatch sea"></span>Sea Glass</button>
@@ -521,6 +631,8 @@ body.is-immersive .control-dock {display:none!important}
   let bpm = rateValue(number(stored.bpm,6));
   let ratio = clamp(number(stored.ratio,0.4),0.3,0.6);
   let theme = ['sea','moon','forest'].includes(stored.theme) ? stored.theme : 'sea';
+  let orbStyle = ['galaxy','classic'].includes(stored.orbStyle) ? stored.orbStyle : 'galaxy';
+  let motionMode = ['gentle','dream','still'].includes(stored.motionMode) ? stored.motionMode : 'gentle';
   let audioOn = stored.audioOn === true;
   let audioVolume = clamp(number(stored.audioVolume,25),0,100);
   let minutes = [0,5,10,15,20].includes(stored.minutes) ? stored.minutes : 5;
@@ -536,7 +648,7 @@ body.is-immersive .control-dock {display:none!important}
   let audioContext=null, lastAudiblePhase='';
 
   function savePreferences() {
-    safeSet(PREF_KEY,{bpm,ratio,theme,audioOn,audioVolume,minutes,trialRate,trialMinutes,showTimer});
+    safeSet(PREF_KEY,{bpm,ratio,theme,orbStyle,motionMode,audioOn,audioVolume,minutes,trialRate,trialMinutes,showTimer});
   }
   function setupFolds() {
     const prior=safeGet(PANELS_KEY);
@@ -560,6 +672,185 @@ body.is-immersive .control-dock {display:none!important}
     $('timer-display').hidden=!showTimer;
     $('focus-clock').hidden=!showTimer;
     $('timer-summary').textContent=(minutes===0?'Open-ended':minutes+' min')+(showTimer?'':' · hidden');
+  }
+
+  // Galaxy Pearl: self-contained Canvas artwork. All visual texture is generated locally.
+  // Pre-rendering the nebula means each animated frame only composites two textures.
+  const galaxyCanvas=$('galaxy-canvas');
+  let galaxyCtx=null, gasTexture=null, starTexture=null, galaxyFrameId=0;
+  let galaxyLastFrame=0, galaxyBreathLight=.28, galaxySwirlTime=0;
+  let galaxyLastTime=0, galaxyReady=false;
+  const TWO_PI=Math.PI*2;
+  function galaxyRandom(seed) {
+    let value=seed>>>0;
+    return ()=>{value=(Math.imul(value,1664525)+1013904223)>>>0;return value/4294967296;};
+  }
+  function makeCanvas(size) {
+    const c=document.createElement('canvas');c.width=size;c.height=size;return c;
+  }
+  function makeTextures() {
+    const N=560,center=N/2,rng=galaxyRandom(731954);
+    gasTexture=makeCanvas(N);starTexture=makeCanvas(N);
+    const g=gasTexture.getContext('2d'),stars=starTexture.getContext('2d');
+    if(!g || !stars){gasTexture=null;starTexture=null;return false;}
+    const palette=[
+      [142,128,250],[70,190,230],[180,138,246],[98,135,232],
+      [98,211,216],[215,175,252],[89,116,206],[130,187,249]
+    ];
+    function mist(x,y,size,color,alpha) {
+      const grad=g.createRadialGradient(x,y,0,x,y,size);
+      const rgb=color.join(',');
+      grad.addColorStop(0,'rgba('+rgb+','+alpha+')');
+      grad.addColorStop(.28,'rgba('+rgb+','+(alpha*.58)+')');
+      grad.addColorStop(.7,'rgba('+rgb+','+(alpha*.11)+')');
+      grad.addColorStop(1,'rgba('+rgb+',0)');
+      g.fillStyle=grad;g.fillRect(x-size,y-size,size*2,size*2);
+    }
+    // The luminous central arms form a spiral like the chosen Galaxy Pearl concept.
+    for(let arm=0;arm<4;arm++) {
+      for(let i=0;i<195;i++) {
+        const t=.04+rng()*.94;
+        const radius=15+Math.pow(t,.82)*236;
+        const theta=arm*TWO_PI/4+t*8.55-.45;
+        const scatter=3+18*t;
+        const x=center+Math.cos(theta)*radius+(rng()-.5)*scatter;
+        const y=center+Math.sin(theta)*radius*.79+(rng()-.5)*scatter;
+        const col=palette[(arm*2+(i%3===0?1:0))%palette.length];
+        mist(x,y,9+rng()*33+(1-t)*22,col,.07+rng()*.11);
+      }
+    }
+    // Larger transparent drifts blend the arms into graceful nebula-like ribbons.
+    for(let j=0;j<170;j++){
+      const a=rng()*TWO_PI,rad=Math.sqrt(rng())*246;
+      mist(center+Math.cos(a)*rad,center+Math.sin(a)*rad*.87,
+        22+rng()*52,palette[Math.floor(rng()*palette.length)],.018+rng()*.031);
+    }
+    // Pearl-white, softly glowing heart.
+    mist(center,center,87,[242,224,252],.21);
+    mist(center+11,center-8,42,[241,231,255],.22);
+    const starColors=['238,247,255','174,218,255','217,194,255','162,245,248'];
+    function point(x,y,r,alpha,color) {
+      stars.beginPath();stars.arc(x,y,r,0,TWO_PI);
+      stars.fillStyle='rgba('+color+','+alpha+')';stars.fill();
+    }
+    for(let i=0;i<1340;i++) {
+      const arm=Math.floor(rng()*4),t=Math.pow(rng(),.81);
+      const radius=9+t*254,angle=arm*TWO_PI/4+t*8.55-.45;
+      const spread=(rng()-.5)*(12+40*t);
+      const x=center+Math.cos(angle)*radius+Math.sin(angle)*spread;
+      const y=center+Math.sin(angle)*radius*.79-Math.cos(angle)*spread*.75;
+      point(x,y,(rng()>.975?1.3:.3+rng()*.65),.16+rng()*.65,starColors[Math.floor(rng()*starColors.length)]);
+    }
+    for(let i=0;i<275;i++) {
+      const a=rng()*TWO_PI,r=Math.sqrt(rng())*257;
+      point(center+Math.cos(a)*r,center+Math.sin(a)*r,.25+rng()*.58,.2+rng()*.55,'201,217,255');
+    }
+    for(let i=0;i<17;i++) {
+      const a=rng()*TWO_PI,r=55+rng()*190;
+      const x=center+Math.cos(a)*r,y=center+Math.sin(a)*r*.82;
+      const glow=stars.createRadialGradient(x,y,0,x,y,9);
+      glow.addColorStop(0,'rgba(252,248,255,.83)');
+      glow.addColorStop(.18,'rgba(179,205,255,.48)');
+      glow.addColorStop(1,'rgba(165,190,255,0)');
+      stars.fillStyle=glow;stars.fillRect(x-9,y-9,18,18);
+      point(x,y,.75+rng()*.85,.8,'254,250,255');
+    }
+    return true;
+  }
+  function prepareGalaxy() {
+    if(galaxyReady)return true;
+    try{
+      galaxyCtx=galaxyCanvas.getContext('2d',{alpha:true});
+      if(!galaxyCtx || !makeTextures())return false;
+      galaxyReady=true;return true;
+    }catch(_){return false;}
+  }
+  function paintGalaxy() {
+    if(!galaxyCtx || !gasTexture || !starTexture)return;
+    const ctx=galaxyCtx,W=galaxyCanvas.width,C=W/2,orbit=galaxySwirlTime;
+    const breath=clamp(galaxyBreathLight,0,1);
+    ctx.clearRect(0,0,W,W);
+    ctx.save();ctx.beginPath();ctx.arc(C,C,C-2,0,TWO_PI);ctx.clip();
+    const night=ctx.createRadialGradient(W*.34,W*.35,8,C,C,W*.68);
+    night.addColorStop(0,'#233269');night.addColorStop(.38,'#142657');
+    night.addColorStop(.75,'#0b1a3b');night.addColorStop(1,'#03091d');
+    ctx.fillStyle=night;ctx.fillRect(0,0,W,W);
+    ctx.save();ctx.translate(C,C);ctx.rotate(orbit);
+    const spread=1.00+breath*.018;
+    ctx.scale(spread,spread*.993);
+    ctx.globalAlpha=.87+breath*.1;
+    ctx.drawImage(gasTexture,-W*.5,-W*.5,W,W);
+    ctx.restore();
+    ctx.save();ctx.translate(C,C);ctx.rotate(orbit*.64);
+    ctx.globalAlpha=.79+breath*.20;
+    ctx.drawImage(starTexture,-W*.5,-W*.5,W,W);
+    ctx.restore();
+    ctx.save();ctx.globalCompositeOperation='screen';
+    const lum=ctx.createRadialGradient(W*.51,W*.48,1,W*.51,W*.48,W*.3);
+    lum.addColorStop(0,'rgba(240,222,255,'+(.19+breath*.26)+')');
+    lum.addColorStop(.19,'rgba(184,161,250,'+(.18+breath*.12)+')');
+    lum.addColorStop(.55,'rgba(116,151,232,.06)');
+    lum.addColorStop(1,'rgba(93,143,246,0)');
+    ctx.fillStyle=lum;ctx.fillRect(0,0,W,W);
+    ctx.restore();
+    // Glass refraction, subtle upper arc reflection and a luminous outer rim.
+    const rim=ctx.createRadialGradient(C*.95,C*.95,W*.37,C,C,W*.5);
+    rim.addColorStop(0,'rgba(123,171,252,0)');
+    rim.addColorStop(.75,'rgba(106,153,236,.015)');
+    rim.addColorStop(.94,'rgba(141,180,255,.14)');
+    rim.addColorStop(1,'rgba(197,220,255,.37)');
+    ctx.fillStyle=rim;ctx.fillRect(0,0,W,W);
+    const shine=ctx.createLinearGradient(W*.14,W*.08,W*.68,W*.64);
+    shine.addColorStop(0,'rgba(250,253,255,.12)');
+    shine.addColorStop(.24,'rgba(248,250,255,.025)');
+    shine.addColorStop(.54,'rgba(249,250,255,0)');
+    shine.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=shine;ctx.fillRect(0,0,W,W);
+    ctx.restore();
+  }
+  function galaxyLoop(time) {
+    galaxyFrameId=0;
+    if(document.hidden || orbStyle!=='galaxy' || reducedMotion || motionMode==='still')return;
+    if(galaxyLastTime>0){
+      // Time is capped to avoid a big visual jump after background throttling.
+      const delta=Math.min(90,Math.max(0,time-galaxyLastTime));
+      galaxySwirlTime+=delta*(motionMode==='dream'?.000026:.000011);
+    }
+    galaxyLastTime=time;
+    if(time-galaxyLastFrame>1000/28) {
+      galaxyLastFrame=time;paintGalaxy();
+    }
+    galaxyFrameId=requestAnimationFrame(galaxyLoop);
+  }
+  function refreshGalaxyMotion() {
+    cancelAnimationFrame(galaxyFrameId);galaxyFrameId=0;
+    galaxyLastTime=0;galaxyLastFrame=0;
+    if(orbStyle==='galaxy' && prepareGalaxy()) {
+      paintGalaxy();
+      if(!reducedMotion && motionMode!=='still' && !document.hidden)galaxyFrameId=requestAnimationFrame(galaxyLoop);
+    }
+  }
+  function setOrbStyle(next) {
+    if(next!=='galaxy' && next!=='classic')return;
+    if(next==='galaxy' && !prepareGalaxy())next='classic';
+    orbStyle=next;document.body.dataset.orb=next;
+    document.querySelectorAll('[data-orb-choice]').forEach(button=>
+      button.setAttribute('aria-pressed',String(button.dataset.orbChoice===next))
+    );
+    $('galaxy-motion').disabled=next!=='galaxy'||reducedMotion;
+    $('galaxy-motion-note').textContent=reducedMotion
+      ?'Reduced-motion preference detected: the galaxy remains still.'
+      : next==='classic'
+      ?'Classic sphere selected. Cosmic animation is paused.'
+      :motionMode==='still'
+      ?'A still miniature galaxy, with breathing-led expansion.'
+      :'Starfields and nebula clouds drift slowly as the sphere breathes.';
+    refreshGalaxyMotion();savePreferences();
+  }
+  function setMotionMode(next) {
+    if(!['gentle','dream','still'].includes(next))return;
+    motionMode=next;$('galaxy-motion').value=next;
+    setOrbStyle(orbStyle);
   }
   function setTheme(value) {
     if (!['sea','moon','forest'].includes(value)) return;
@@ -673,6 +964,8 @@ body.is-immersive .control-dock {display:none!important}
     const progress=inhaling?cycleMs/inhaleMs:(cycleMs-inhaleMs)/(d.exhale*1000);
     const ease=(1-Math.cos(Math.PI*clamp(progress,0,1)))/2;
     const scale=reducedMotion?(inhaling?0.86:0.72):inhaling?0.72+0.28*ease:1-0.28*ease;
+    galaxyBreathLight=inhaling ? .23+.77*ease : 1-.77*ease;
+    if(orbStyle==='galaxy' && (reducedMotion || motionMode==='still'))paintGalaxy();
     $('orb').style.transform='scale('+scale+')';
     $('aura').style.transform='scale('+(scale*1.08)+')';
     $('phase').textContent=inhaling?'Inhale':'Exhale';
@@ -775,7 +1068,8 @@ body.is-immersive .control-dock {display:none!important}
       document.querySelector('input[name="comfort"][value="3"]').checked=true;
     }
     if(immersive)setImmersive(false);
-    lastAudiblePhase='';cycleMs=0;
+    lastAudiblePhase='';cycleMs=0;galaxyBreathLight=.28;
+    if(orbStyle==='galaxy')paintGalaxy();
     $('orb').style.transform='scale(.72)';
     $('aura').style.transform='scale(.75)';
     $('phase').textContent=status==='completed'?'Complete':'Breathe';
@@ -908,6 +1202,8 @@ body.is-immersive .control-dock {display:none!important}
   document.addEventListener('keydown',e=>{if(e.key==='Escape' && immersive)setImmersive(false);});
   document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement && immersive)setImmersive(false);});
   document.querySelectorAll('[data-theme-choice]').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.themeChoice)));
+  document.querySelectorAll('[data-orb-choice]').forEach(b=>b.addEventListener('click',()=>setOrbStyle(b.dataset.orbChoice)));
+  $('galaxy-motion').addEventListener('change',e=>setMotionMode(e.target.value));
   $('audio-toggle').addEventListener('change',e=>{
     audioOn=e.target.checked;
     if(audioOn) {unlockAudio();setAudioMessage('Soft tones play at the start of inhale and exhale.');}
@@ -936,7 +1232,10 @@ body.is-immersive .control-dock {display:none!important}
     }
   });
   // Never try to catch up missed cycles after mobile browser/tab suspension.
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden) {pause(true);cancelAnimationFrame(galaxyFrameId);galaxyFrameId=0;}
+    else refreshGalaxyMotion();
+  });
 
   setupFolds();
   $('session-duration').value=String(minutes);
@@ -946,6 +1245,8 @@ body.is-immersive .control-dock {display:none!important}
   $('volume-slider').style.setProperty('--pct',audioVolume+'%');
   $('volume-label').textContent=audioVolume+'%';
   setTheme(theme);
+  $('galaxy-motion').value=motionMode;
+  setOrbStyle(orbStyle);
   setTrialRate(trialRate);
   refresh();
   renderHistory();
