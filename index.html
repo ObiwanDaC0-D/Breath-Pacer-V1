@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Mindful Rhythm">
 <meta name="description" content="A peaceful, adjustable breathing pacer with precise timing and a gentle sea-glass visual guide.">
-<title>Mindful Rhythm · Find your calm</title>
+<title>Mindful Rhythm 3.0 · Find your calm</title>
 <style>
 :root {
   color-scheme:light;
@@ -120,6 +120,140 @@ button:focus-visible,input:focus-visible {outline:3px solid var(--focus);outline
 }
 @media (max-height:730px) {.scene {height:248px}.orb {width:201px;height:201px}.aura {width:210px;height:210px}}
 @media (prefers-reduced-motion:reduce) {.orb,.aura {will-change:auto}}
+
+/* Version 3: tactile controls, focus view, exploration, themes */
+:root[data-theme="sea"] {
+ color-scheme:light;--ink:#263f4a;--muted:#627b7d;--surface:rgba(255,255,255,.75);
+ --border:#d1e2dc;--track:#c1d5ce;--accent:#397f79;--accent-deep:#276a65;
+ --accent-soft:#d9ebe5;--focus:#337e82;--orb-ink:#204751;
+ --orb-one:#d0ece2;--orb-two:#9ed0c6;--orb-three:#73aea9;--orb-four:#4e858e;
+ --aura:rgba(125,188,177,.34);--shadow:rgba(38,78,78,.08)
+}
+:root[data-theme="moon"] {
+ color-scheme:dark;--ink:#e6ecf2;--muted:#aebdcb;--surface:rgba(32,45,66,.80);
+ --border:#47566f;--track:#61718a;--accent:#a6afd8;--accent-deep:#c2c8ee;
+ --accent-soft:#333e5a;--focus:#d1c9ef;--orb-ink:#1e2d4e;
+ --orb-one:#e2e4f9;--orb-two:#bdcbe8;--orb-three:#929fd1;--orb-four:#677eae;
+ --aura:rgba(142,157,218,.26);--shadow:rgba(7,12,32,.36)
+}
+:root[data-theme="forest"] {
+ color-scheme:light;--ink:#2a4337;--muted:#697e70;--surface:rgba(255,255,251,.75);
+ --border:#d8e4d6;--track:#c4d6c3;--accent:#608a6d;--accent-deep:#396a51;
+ --accent-soft:#e0ebde;--focus:#4a876a;--orb-ink:#31533f;
+ --orb-one:#e1f0cd;--orb-two:#b8d6ac;--orb-three:#88b998;--orb-four:#648c75;
+ --aura:rgba(153,190,137,.30);--shadow:rgba(49,85,60,.09)
+}
+html[data-theme="sea"] body {
+ background:radial-gradient(ellipse at 50% 2%,rgba(255,255,255,.86),transparent 56%),linear-gradient(165deg,#f5faf7,#eaf2ef 64%,#e6efed)
+}
+html[data-theme="moon"] body {
+ background:radial-gradient(ellipse at 50% 2%,#333d64,transparent 58%),linear-gradient(165deg,#19243d,#111b30 70%,#10192b)
+}
+html[data-theme="forest"] body {
+ background:radial-gradient(ellipse at 50% 2%,rgba(255,255,255,.9),transparent 56%),linear-gradient(165deg,#f8faf2,#eaf2e6 65%,#e4eee0)
+}
+html[data-theme="moon"] .pattern.active {background:#697ca7;border-color:#697ca7;color:#fff}
+html[data-theme="moon"] .start {background:linear-gradient(115deg,#667caa,#505f94)}
+html[data-theme="forest"] .start {background:linear-gradient(115deg,#69977e,#41745c)}
+html[data-theme="sea"] .start {background:linear-gradient(115deg,#4a8e88,#2d706e)}
+html[data-theme="moon"] input[type=range]::-webkit-slider-thumb {background:#f4f3ff}
+html[data-theme="moon"] input[type=range]::-moz-range-thumb {background:#f4f3ff}
+.subtle {color:var(--muted);font-size:11px;line-height:1.55}
+.section-title {font-size:14px;font-weight:690;letter-spacing:-.15px}
+.minihead {display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ratio-control {border-top:1px solid var(--border);padding-top:15px;margin-top:16px}
+.ratio-control input[type=range] {margin-top:8px}
+.ratio-values {display:flex;justify-content:space-between;gap:12px;margin-top:4px;color:var(--muted);font-size:11px}
+.ratio-values strong {color:var(--ink)}
+.ratio-presets {display:flex;gap:8px;margin-top:12px}
+.pill-button,.plain-button,.small-button {
+ border:1px solid var(--border);background:var(--surface);color:var(--ink);cursor:pointer;
+ border-radius:12px;padding:10px 13px;font-size:12px;font-weight:620;min-height:40px
+}
+.pill-button.active {background:var(--accent-soft);border-color:var(--accent);color:var(--accent-deep)}
+.quick-tools {display:flex;justify-content:center;gap:8px;margin:13px 0 16px}
+.quick-tools button {flex:1}
+.option-select {
+ font:inherit;min-height:41px;border:1px solid var(--border);border-radius:11px;
+ background:var(--surface);color:var(--ink);padding:6px 9px
+}
+.timer-options {display:flex;align-items:center;gap:12px;justify-content:space-between;margin-top:14px}
+.timer-clock {font-size:30px;font-weight:690;letter-spacing:-.7px;font-variant-numeric:tabular-nums}
+.progress-track {height:6px;border-radius:12px;background:var(--track);overflow:hidden;margin-top:13px}
+.progress-fill {width:0;height:100%;background:var(--accent);border-radius:12px;transition:width .15s linear}
+details.panel {padding:0;overflow:hidden}
+details.panel > summary {list-style:none;cursor:pointer;padding:17px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+details.panel > summary::-webkit-details-marker {display:none}
+details.panel > summary::after {content:'⌄';font-size:20px;color:var(--muted);line-height:1}
+details.panel[open] > summary::after {content:'⌃'}
+.details-body {padding:0 17px 18px}
+.row-between {display:flex;align-items:center;justify-content:space-between;gap:12px}
+.toggle {width:19px;height:19px;accent-color:var(--accent-deep)}
+.separator {border:0;border-top:1px solid var(--border);margin:17px 0}
+.choice-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:11px}
+.theme-choice {
+ cursor:pointer;border:1px solid var(--border);border-radius:13px;background:var(--surface);
+ padding:7px;color:var(--ink);font-size:12px;min-height:76px
+}
+.theme-choice[aria-pressed="true"] {outline:2px solid var(--accent);outline-offset:1px}
+.swatch {display:block;height:30px;border-radius:8px;margin-bottom:8px}
+.swatch.sea {background:linear-gradient(115deg,#eaf2ef,#73aea9,#4e858e)}
+.swatch.moon {background:linear-gradient(115deg,#202d48,#929fd1,#c8d2f1)}
+.swatch.forest {background:linear-gradient(115deg,#eaf2e6,#88b998,#648c75)}
+.sound-row {margin-top:14px}
+.sound-row input[type=range] {height:35px}
+.sound-row input[type=range]::-webkit-slider-runnable-track {height:8px}
+.sound-row input[type=range]::-moz-range-track {height:8px}
+.sound-row input[type=range]::-webkit-slider-thumb {margin-top:-11px}
+.explorer-line {display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0 3px}
+.explorer-number {font-size:26px;font-weight:730;color:var(--accent-deep);font-variant-numeric:tabular-nums}
+.explorer-buttons {display:flex;gap:8px}
+.explorer-buttons button {width:40px;height:40px;padding:0;font-size:20px}
+.explorer-slider {width:100%}
+.explorer-setting {display:flex;align-items:center;gap:10px;justify-content:space-between;margin:10px 0 14px}
+.wide-button {width:100%;min-height:44px;background:var(--accent-deep);color: #fff;border:0;border-radius:12px;font-weight:680;cursor:pointer}
+html[data-theme="moon"] .wide-button {background:#6b7fae}
+.trial-feedback {margin:14px 0;border:1px solid var(--accent);border-radius:15px;padding:13px;background:var(--accent-soft)}
+.trial-feedback[hidden] {display:none}
+.comfort-choices {display:flex;gap:5px;justify-content:space-between;margin:10px 0}
+.comfort-choices label {flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+.comfort-choices input {accent-color:var(--accent-deep);width:17px;height:17px}
+.mini-chart {display:grid;gap:8px;margin-top:12px}
+.bar-item {display:grid;grid-template-columns:58px 1fr 42px;align-items:center;gap:9px;font-size:11px;font-variant-numeric:tabular-nums}
+.bar-bg {height:10px;border-radius:8px;background:var(--track);overflow:hidden}
+.bar-fill {height:100%;border-radius:8px;background:var(--accent)}
+.stats {display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.stat {border-radius:12px;background:var(--accent-soft);padding:12px}
+.stat strong {display:block;font-size:22px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.stat span {font-size:10.5px;color:var(--muted)}
+.history-list {display:grid;gap:7px;margin:12px 0}
+.history-item {display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:12px}
+.history-item small {display:block;color:var(--muted);margin-top:3px;font-size:10px}
+.history-actions {display:flex;gap:8px;margin-top:13px}
+.history-actions button {flex:1}
+.privacy {color:var(--muted);font-size:10.5px;line-height:1.5;margin-top:10px}
+.focus-bar {display:none}
+body.is-immersive {overflow:hidden}
+body.is-immersive .app {
+ max-width:none;min-height:100svh;display:flex;flex-direction:column;
+ align-items:center;justify-content:center;padding:calc(22px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom))
+}
+body.is-immersive .app > :not(.scene):not(.guidance):not(.focus-bar) {display:none !important}
+body.is-immersive .focus-bar {display:flex;align-items:center;justify-content:space-between;width:min(100%,520px);gap:12px;position:absolute;top:calc(14px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);padding:0 18px}
+.focus-control {border:1px solid var(--border);border-radius:13px;padding:10px 14px;background:var(--surface);color:var(--ink);min-height:44px;font-size:12px;cursor:pointer}
+.focus-clock {font-size:15px;font-weight:670;color:var(--ink);font-variant-numeric:tabular-nums}
+body.is-immersive .scene {height:min(66svh,570px);width:100%}
+body.is-immersive .orb {width:min(340px,73vw,45svh);height:min(340px,73vw,45svh);max-height:none;max-width:none}
+body.is-immersive .aura {width:min(385px,82vw,53svh);height:min(385px,82vw,53svh);max-height:none;max-width:none}
+body.is-immersive .guidance {font-size:15px;max-width:500px;margin:0}
+body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%)}
+@media(max-width:380px) {
+ .timer-options{align-items:flex-start}.choice-grid{gap:6px}.theme-choice{padding:6px;font-size:11px}
+}
+@media(prefers-reduced-motion:reduce) {
+ *,*::before,*::after {scroll-behavior:auto!important;transition:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -132,6 +266,12 @@ button:focus-visible,input:focus-visible {outline:3px solid var(--focus);outline
     </div>
     <div id="status" class="status" role="status" aria-live="polite">Ready</div>
   </header>
+
+  <div class="focus-bar" id="focus-bar" aria-label="Focus mode controls">
+    <button class="focus-control" id="focus-exit" type="button">Exit focus</button>
+    <span class="focus-clock" id="focus-clock">0:00</span>
+    <button class="focus-control" id="focus-toggle" type="button">Pause</button>
+  </div>
   <div class="scene" aria-label="Visual breathing guide">
     <div id="aura" class="aura" aria-hidden="true"></div>
     <div id="orb" class="orb" aria-hidden="true">
@@ -166,179 +306,527 @@ button:focus-visible,input:focus-visible {outline:3px solid var(--focus);outline
       <button type="button" class="pattern active" data-ratio="0.4" aria-pressed="true">Longer Exhale<span>40% in · 60% out</span></button>
       <button type="button" class="pattern" data-ratio="0.5" aria-pressed="false">Equal Breathing<span>50% in · 50% out</span></button>
     </div>
+
+    <div class="ratio-control">
+      <div class="minihead"><label class="label" for="ratio-slider">Custom inhale / exhale balance</label><span class="subtle" id="ratio-display">40% / 60%</span></div>
+      <input type="range" id="ratio-slider" min="30" max="60" step="1" value="40" aria-label="Inhale percentage of each breath cycle">
+      <div class="ratio-values"><span>30% inhale</span><span>60% inhale</span></div>
+      <div class="subtle">The selected ratio divides the full breath cycle into inhale and exhale, without a breath hold.</div>
+    </div>
   </section>
   <div class="actions">
     <button id="start" type="button" class="start">Begin breathing</button>
     <button id="stop" type="button" class="stop" disabled>Stop</button>
   </div>
+
+  <div class="quick-tools">
+    <button id="focus-launch" class="pill-button" type="button">◯ Immersive focus</button>
+  </div>
+
+  <section class="panel" aria-label="Practice timer">
+    <div class="panel-head"><div><div class="section-title">Practice timer</div><div class="subtle">Set a time or practice freely.</div></div><div id="clock" class="timer-clock" aria-label="Session time">0:00</div></div>
+    <div class="timer-options">
+      <label class="label" for="session-duration">Session length</label>
+      <select id="session-duration" class="option-select">
+        <option value="0">Open-ended</option>
+        <option value="5">5 minutes</option>
+        <option value="10">10 minutes</option>
+        <option value="15">15 minutes</option>
+        <option value="20">20 minutes</option>
+      </select>
+    </div>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+    <div id="timer-note" class="subtle" style="margin-top:8px">Time begins when you start breathing.</div>
+  </section>
+
+  <details class="panel" id="appearance-panel">
+    <summary><span class="section-title">Atmosphere & sound</span><span class="subtle">3 color themes · optional tones</span></summary>
+    <div class="details-body">
+      <div class="label">Choose an atmosphere</div>
+      <div class="choice-grid" role="group" aria-label="Color theme">
+        <button class="theme-choice" type="button" data-theme-choice="sea" aria-pressed="true"><span class="swatch sea"></span>Sea Glass</button>
+        <button class="theme-choice" type="button" data-theme-choice="moon" aria-pressed="false"><span class="swatch moon"></span>Moonlight</button>
+        <button class="theme-choice" type="button" data-theme-choice="forest" aria-pressed="false"><span class="swatch forest"></span>Forest</button>
+      </div>
+      <hr class="separator">
+      <div class="row-between">
+        <label class="label" for="audio-toggle">Gentle inhale / exhale tones</label>
+        <input class="toggle" id="audio-toggle" type="checkbox">
+      </div>
+      <div class="sound-row">
+        <div class="row-between"><label class="subtle" for="volume-slider">Tone volume</label><span class="subtle" id="volume-label">25%</span></div>
+        <input type="range" id="volume-slider" min="0" max="100" step="5" value="25" aria-label="Audio cue volume">
+      </div>
+      <div id="sound-message" class="subtle" role="status" aria-live="polite">Tones are off by default and play only during active practice.</div>
+    </div>
+  </details>
+
+  <details class="panel" id="explorer-panel">
+    <summary><span class="section-title">Breathing-rate explorer</span><span class="subtle">Compare comfort across rates</span></summary>
+    <div class="details-body">
+      <p class="subtle" style="margin:0">Explore slower breathing at your own pace. Compare how comfortable different rates feel; this is <strong>not</strong> an HRV measurement or a validated resonance-frequency assessment.</p>
+      <div class="explorer-line">
+        <div><div class="label">Trial breathing rate</div><div><span id="explorer-value" class="explorer-number">6.0</span> <span class="unit">BPM</span></div></div>
+        <div class="explorer-buttons">
+          <button class="pill-button" type="button" id="explorer-minus" aria-label="Decrease trial rate 0.1 BPM">−</button>
+          <button class="pill-button" type="button" id="explorer-plus" aria-label="Increase trial rate 0.1 BPM">+</button>
+        </div>
+      </div>
+      <input class="explorer-slider" id="explorer-slider" type="range" min="4" max="8" step="0.1" value="6" aria-label="Trial breathing rate">
+      <div class="row-between subtle"><span>4 BPM</span><span>8 BPM</span></div>
+      <div class="explorer-setting"><label for="trial-duration" class="label">Trial length</label><select id="trial-duration" class="option-select"><option value="1">1 minute</option><option value="2" selected>2 minutes</option><option value="3">3 minutes</option></select></div>
+      <button id="trial-start" type="button" class="wide-button">Begin comfort trial</button>
+      <div id="trial-feedback" class="trial-feedback" hidden>
+        <div class="label">Trial complete. How comfortable did that rate feel?</div>
+        <div class="comfort-choices" role="radiogroup" aria-label="Comfort rating">
+          <label><input type="radio" name="comfort" value="1">1<br>Very low</label>
+          <label><input type="radio" name="comfort" value="2">2<br>Low</label>
+          <label><input type="radio" name="comfort" value="3" checked>3<br>Neutral</label>
+          <label><input type="radio" name="comfort" value="4">4<br>High</label>
+          <label><input type="radio" name="comfort" value="5">5<br>Very high</label>
+        </div>
+        <button id="trial-save" class="wide-button" type="button">Save comfort rating</button>
+      </div>
+      <div class="minihead" style="margin-top:18px"><div class="section-title">Your comparisons</div><button id="trial-clear" type="button" class="small-button">Clear</button></div>
+      <div id="trial-chart" class="mini-chart" aria-label="Mean comfort scores by breathing rate"></div>
+      <div id="trial-insight" class="subtle" style="margin-top:12px">Complete a trial to see comfort comparisons.</div>
+    </div>
+  </details>
+
+  <details class="panel" id="history-panel">
+    <summary><span class="section-title">Practice history</span><span class="subtle">Private, on this device</span></summary>
+    <div class="details-body">
+      <div class="stats">
+        <div class="stat"><strong id="history-sessions">0</strong><span>Sessions</span></div>
+        <div class="stat"><strong id="history-minutes">0</strong><span>Practice minutes</span></div>
+      </div>
+      <div id="history-list" class="history-list"><div class="subtle">No practice sessions yet.</div></div>
+      <div class="history-actions"><button id="history-export" class="plain-button" type="button">Export CSV</button><button id="history-clear" class="plain-button" type="button">Clear history</button></div>
+      <div class="privacy">Your settings, sessions, and comfort ratings are kept in this browser's local storage. No account or external data service is used. Clearing browser storage removes them.</div>
+    </div>
+  </details>
   <div id="footer" class="footer">Your pace. Your moment. No rush.</div>
   <div class="comfort">Breathe gently. Stop if you feel uncomfortable or lightheaded.</div>
 </main>
 <script>
+
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
-  const MIN = 4, MAX = 12, STEP = 0.1;
-  const STORAGE_KEY = 'mindful-rhythm-v2';
-  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let bpm = 6, ratio = 0.4, activeBpm = 6, activeRatio = 0.4;
-  let state = 'idle', started = 0, pausedElapsed = 0, frameId = 0, cycles = 0;
-  const duration = (rate, balance) => ({ inhale: 60 / rate * balance, exhale: 60 / rate * (1 - balance), total: 60 / rate });
-  const countdown = n => String(Math.max(1, Math.ceil(n - 0.00001)));
-  const clampRate = value => Math.round(Math.min(MAX, Math.max(MIN, value)) * 10) / 10;
+  const PREF_KEY = 'mindful-rhythm-v3-preferences';
+  const HISTORY_KEY = 'mindful-rhythm-v3-history';
+  const TRIAL_KEY = 'mindful-rhythm-v3-trials';
+  const V2_KEY = 'mindful-rhythm-v2';
+  const MIN = 4, MAX = 12, TRIAL_MAX = 8;
+  const reducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+  const safeGet = key => {try{return JSON.parse(localStorage.getItem(key) || 'null');}catch(_){return null;}};
+  const safeSet = (key,value) => {try{localStorage.setItem(key,JSON.stringify(value));}catch(_){}};
+  const round1 = n => Math.round(n * 10) / 10;
+  const clamp = (n,min,max) => Math.max(min,Math.min(max,n));
+  const rateValue = n => round1(clamp(Number(n), MIN, MAX));
+  const duration = (rate,balance) => ({inhale:60/rate*balance,exhale:60/rate*(1-balance),total:60/rate});
+  const countdown = n => String(Math.max(1,Math.ceil(n-0.00001)));
+  const readableTime = seconds => {const s=Math.max(0,Math.ceil(seconds));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
+  const number = (v,fallback) => Number.isFinite(Number(v)) ? Number(v) : fallback;
+  const stored = safeGet(PREF_KEY) || safeGet(V2_KEY) || {};
+  let bpm = rateValue(number(stored.bpm,6));
+  let ratio = clamp(number(stored.ratio,0.4),0.3,0.6);
+  let theme = ['sea','moon','forest'].includes(stored.theme) ? stored.theme : 'sea';
+  let audioOn = stored.audioOn === true;
+  let audioVolume = clamp(number(stored.audioVolume,25),0,100);
+  let minutes = [0,5,10,15,20].includes(stored.minutes) ? stored.minutes : 5;
+  let trialRate = round1(clamp(number(stored.trialRate,6), MIN, TRIAL_MAX));
+  let trialMinutes = [1,2,3].includes(stored.trialMinutes) ? stored.trialMinutes : 2;
+  const rawHistory = safeGet(HISTORY_KEY), rawTrials = safeGet(TRIAL_KEY);
+  let history = Array.isArray(rawHistory) ? rawHistory.filter(x => x && Number.isFinite(x.elapsedMs) && typeof x.timestamp === 'string').slice(0,80) : [];
+  let trials = Array.isArray(rawTrials) ? rawTrials.filter(x=>x && Number.isFinite(x.rate) && x.rate>=4 && x.rate<=8 && Number.isFinite(x.comfort) && x.comfort>=1 && x.comfort<=5).slice(0,100) : [];
+  let state='idle', mode='normal', activeBpm=bpm, activeRatio=ratio;
+  let sessionLimitMs=0, elapsedMs=0, cycleMs=0, lastTime=0, frameId=0, cycles=0;
+  let startBpm=bpm, startedAt='', trialBeingRated=null, immersive=false;
+  let audioContext=null, lastAudiblePhase='';
 
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    if (Number.isFinite(saved.bpm)) bpm = clampRate(saved.bpm);
-    if (saved.ratio === 0.4 || saved.ratio === 0.5) ratio = saved.ratio;
-  } catch (_) { /* Storage can be unavailable in private browsing. */ }
-
-  function remember() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ bpm, ratio })); }
-    catch (_) { /* App remains usable without storage. */ }
+  function savePreferences() {
+    safeSet(PREF_KEY,{bpm,ratio,theme,audioOn,audioVolume,minutes,trialRate,trialMinutes});
   }
-
-  function setStatus(text, active) {
-    $('status').textContent = text;
-    $('status').classList.toggle('on', active);
+  function setTheme(value) {
+    if (!['sea','moon','forest'].includes(value)) return;
+    theme=value;document.documentElement.dataset.theme=theme;
+    document.querySelectorAll('[data-theme-choice]').forEach(b => {
+      b.setAttribute('aria-pressed',String(b.dataset.themeChoice===theme));
+    });
+    const meta=document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content',theme==='moon'?'#19243d':theme==='forest'?'#eaf2e6':'#eaf2ef');
+    savePreferences();
   }
-
-  function updateButtons() {
-    $('start').textContent = state === 'running' ? 'Pause breathing' : state === 'paused' ? 'Resume breathing' : 'Begin breathing';
-    $('stop').disabled = state === 'idle';
+  function setAudioMessage(message) {$('sound-message').textContent=message;}
+  function unlockAudio() {
+    if (!audioOn) return;
+    try {
+      const Ctx=window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) {audioOn=false;$('audio-toggle').checked=false;setAudioMessage('Audio cues are unavailable in this browser.');savePreferences();return;}
+      if (!audioContext) audioContext=new Ctx();
+      if (audioContext.state==='suspended') audioContext.resume().catch(()=>setAudioMessage('Audio may need a user tap to activate.'));
+    } catch (_) {audioOn=false;$('audio-toggle').checked=false;setAudioMessage('Audio cues could not be enabled.');savePreferences();}
   }
-
-  function refresh() {
-    const d = duration(bpm, ratio);
-    $('bpm').textContent = bpm.toFixed(1);
-    $('inhale-duration').textContent = d.inhale.toFixed(1);
-    $('exhale-duration').textContent = d.exhale.toFixed(1);
-    $('slider').value = bpm.toFixed(1);
-    $('slider').style.setProperty('--pct', ((bpm - MIN) / (MAX - MIN) * 100) + '%');
-    $('decrease').disabled = bpm <= MIN;
-    $('increase').disabled = bpm >= MAX;
-    if (state === 'idle') $('count').textContent = countdown(d.inhale);
-    const changed = bpm !== activeBpm || ratio !== activeRatio;
-    $('pending').textContent = state !== 'idle' && changed ? 'Your new pace starts with the next full breath.' : '';
+  function playTone(phase) {
+    if (!audioOn || audioVolume===0) return;
+    unlockAudio();
+    if (!audioContext || audioContext.state!=='running') return;
+    try {
+      const t=audioContext.currentTime;
+      const osc=audioContext.createOscillator();
+      const gain=audioContext.createGain();
+      osc.type='sine';
+      osc.frequency.setValueAtTime(phase==='inhale'?392:329.63,t);
+      const peak=0.065 * audioVolume/100;
+      gain.gain.setValueAtTime(0.0001,t);
+      gain.gain.exponentialRampToValueAtTime(Math.max(0.0002,peak),t+0.055);
+      gain.gain.exponentialRampToValueAtTime(0.0001,t+0.42);
+      osc.connect(gain);gain.connect(audioContext.destination);
+      osc.start(t);osc.stop(t+0.45);
+    } catch (_) {setAudioMessage('Audio playback was blocked. Check your sound settings.');}
   }
-
-  function setRate(value) {
-    const numerical = Number(value);
-    if (!Number.isFinite(numerical)) return;
-    bpm = clampRate(numerical);
-    remember();
-    refresh();
-  }
-
-  function applyPattern() {
-    document.querySelectorAll('.pattern').forEach(button => {
-      const selected = Number(button.dataset.ratio) === ratio;
-      button.classList.toggle('active', selected);
-      button.setAttribute('aria-pressed', String(selected));
+  function applyPatternButtons() {
+    document.querySelectorAll('.pattern').forEach(b => {
+      const value=Number(b.dataset.ratio);
+      const active=Math.abs(value-ratio)<0.001;
+      b.classList.toggle('active',active);
+      b.setAttribute('aria-pressed',String(active));
     });
   }
-
-  function reset() {
-    cancelAnimationFrame(frameId);
-    frameId = 0;
-    state = 'idle';
-    started = 0;
-    pausedElapsed = 0;
-    cycles = 0;
-    activeBpm = bpm;
-    activeRatio = ratio;
-    $('orb').style.transform = 'scale(.72)';
-    $('aura').style.transform = 'scale(.75)';
-    $('phase').textContent = 'Breathe';
-    $('guidance').textContent = 'Follow the gentle rhythm of the circle';
-    $('footer').textContent = 'Your pace. Your moment. No rush.';
-    setStatus('Ready', false);
-    updateButtons();
-    refresh();
+  function updateButtons() {
+    const isTrial=mode==='trial' && state!=='idle';
+    $('start').textContent=state==='running'?'Pause breathing':state==='paused'?'Resume breathing':'Begin breathing';
+    $('focus-toggle').textContent=state==='running'?'Pause':state==='paused'?'Resume':'Begin';
+    $('stop').disabled=state==='idle';
+    $('slider').disabled=isTrial;
+    $('decrease').disabled=isTrial || bpm<=MIN;
+    $('increase').disabled=isTrial || bpm>=MAX;
+    $('ratio-slider').disabled=isTrial;
+    document.querySelectorAll('.pattern').forEach(b=>b.disabled=isTrial);
+    $('session-duration').disabled=state!=='idle';
+    $('trial-start').textContent=state!=='idle'?'Start new trial (replaces session)':'Begin comfort trial';
   }
-
-  function render(now) {
-    if (state !== 'running') return;
-    let d = duration(activeBpm, activeRatio);
-    let elapsed = Math.max(0, (now - started) / 1000);
-    if (elapsed >= d.total) {
-      const completed = Math.floor(elapsed / d.total);
-      cycles += completed;
-      started += completed * d.total * 1000;
-      if (bpm !== activeBpm || ratio !== activeRatio) {
-        activeBpm = bpm;
-        activeRatio = ratio;
-        // Begin the newly selected pace at the next complete breathing cycle.
-        started = now;
-        $('pending').textContent = '';
+  function refresh() {
+    const d=duration(bpm,ratio);
+    $('bpm').textContent=bpm.toFixed(1);
+    $('inhale-duration').textContent=d.inhale.toFixed(1);
+    $('exhale-duration').textContent=d.exhale.toFixed(1);
+    $('slider').value=bpm.toFixed(1);
+    $('slider').style.setProperty('--pct',((bpm-MIN)/(MAX-MIN)*100)+'%');
+    $('ratio-slider').value=String(Math.round(ratio*100));
+    $('ratio-slider').style.setProperty('--pct',((ratio-.3)/.3*100)+'%');
+    $('ratio-display').textContent=Math.round(ratio*100)+'% / '+Math.round((1-ratio)*100)+'%';
+    applyPatternButtons();
+    if(state==='idle') $('count').textContent=countdown(d.inhale);
+    const pending=(bpm!==activeBpm || ratio!==activeRatio) && state!=='idle';
+    $('pending').textContent=pending?'Your new rhythm starts with the next full breath.':'';
+    updateButtons();
+  }
+  function setRate(value) {
+    if(mode==='trial' && state!=='idle')return;
+    const n=Number(value);if(!Number.isFinite(n))return;
+    bpm=rateValue(n);savePreferences();refresh();
+  }
+  function setRatio(value) {
+    if(mode==='trial' && state!=='idle')return;
+    const n=Number(value);if(!Number.isFinite(n))return;
+    ratio=Math.round(clamp(n,.3,.6)*100)/100;savePreferences();refresh();
+  }
+  function updateTimer() {
+    const seconds=sessionLimitMs>0?Math.max(0,(sessionLimitMs-elapsedMs)/1000):elapsedMs/1000;
+    const display=readableTime(seconds);
+    $('clock').textContent=display;$('focus-clock').textContent=display;
+    $('progress-fill').style.width=sessionLimitMs>0?Math.min(100,elapsedMs/sessionLimitMs*100)+'%':'0%';
+    if(state==='idle') $('timer-note').textContent='Time begins when you start breathing.';
+    else if(mode==='trial') $('timer-note').textContent='Comfort trial · '+trialRate.toFixed(1)+' BPM';
+    else $('timer-note').textContent=sessionLimitMs>0?'Time remaining in this session.':'Elapsed practice time.';
+  }
+  function drawPhase() {
+    const d=duration(activeBpm,activeRatio);
+    const inhaleMs=d.inhale*1000;
+    const inhaling=cycleMs<inhaleMs;
+    const remaining=inhaling?(inhaleMs-cycleMs)/1000:(d.total*1000-cycleMs)/1000;
+    const progress=inhaling?cycleMs/inhaleMs:(cycleMs-inhaleMs)/(d.exhale*1000);
+    const ease=(1-Math.cos(Math.PI*clamp(progress,0,1)))/2;
+    const scale=reducedMotion?(inhaling?0.86:0.72):inhaling?0.72+0.28*ease:1-0.28*ease;
+    $('orb').style.transform='scale('+scale+')';
+    $('aura').style.transform='scale('+(scale*1.08)+')';
+    $('phase').textContent=inhaling?'Inhale':'Exhale';
+    $('count').textContent=countdown(remaining);
+    $('guidance').textContent=inhaling?'Breathe in softly':'Release your breath gently';
+    $('footer').textContent='Breath '+(cycles+1)+' · Stay with your rhythm';
+    const phaseKey=String(cycles)+':'+(inhaling?'inhale':'exhale');
+    if(phaseKey!==lastAudiblePhase) {
+      lastAudiblePhase=phaseKey;
+      playTone(inhaling?'inhale':'exhale');
+    }
+  }
+  function advance(now) {
+    if(state!=='running')return;
+    let delta=Math.max(0,now-lastTime);
+    lastTime=now;
+    if(sessionLimitMs>0)delta=Math.min(delta,Math.max(0,sessionLimitMs-elapsedMs));
+    elapsedMs+=delta;cycleMs+=delta;
+    let loops=0;
+    while(cycleMs>=duration(activeBpm,activeRatio).total*1000 && loops<10000) {
+      cycleMs-=duration(activeBpm,activeRatio).total*1000;
+      cycles++;loops++;
+      if(bpm!==activeBpm || ratio!==activeRatio) {
+        activeBpm=bpm;activeRatio=ratio;
+        $('pending').textContent='';
       }
-      d = duration(activeBpm, activeRatio);
-      elapsed = Math.max(0, (now - started) / 1000);
     }
-    const isInhale = elapsed < d.inhale;
-    const remaining = isInhale ? d.inhale - elapsed : d.total - elapsed;
-    const progress = isInhale ? elapsed / d.inhale : (elapsed - d.inhale) / d.exhale;
-    const eased = (1 - Math.cos(Math.PI * Math.max(0, Math.min(1, progress)))) / 2;
-    const scale = reducedMotion ? (isInhale ? 0.86 : 0.72)
-      : isInhale ? 0.72 + 0.28 * eased : 1 - 0.28 * eased;
-    $('orb').style.transform = 'scale(' + scale + ')';
-    $('aura').style.transform = 'scale(' + (scale * 1.08) + ')';
-    $('phase').textContent = isInhale ? 'Inhale' : 'Exhale';
-    $('count').textContent = countdown(remaining);
-    $('guidance').textContent = isInhale ? 'Breathe in softly' : 'Release your breath gently';
-    $('footer').textContent = 'Breath ' + (cycles + 1) + ' · Stay with your rhythm';
-    frameId = requestAnimationFrame(render);
+    drawPhase();updateTimer();
+    if(sessionLimitMs>0 && elapsedMs>=sessionLimitMs-0.05) {
+      finish('completed');
+    }
   }
-
-  function pause(whileAway) {
-    if (state !== 'running') return;
-    pausedElapsed = Math.max(0, (performance.now() - started) / 1000);
-    cancelAnimationFrame(frameId);
-    frameId = 0;
-    state = 'paused';
-    setStatus('Paused', false);
-    $('guidance').textContent = whileAway ? 'Paused while away. Resume when ready.' : 'Take your time. Resume when ready.';
-    updateButtons();
+  function frame(now) {
+    if(state!=='running')return;
+    advance(now);
+    if(state==='running')frameId=requestAnimationFrame(frame);
   }
-
-  function startOrPause() {
-    if (state === 'running') { pause(false); return; }
-    const now = performance.now();
-    if (state === 'idle') {
-      activeBpm = bpm;
-      activeRatio = ratio;
-      cycles = 0;
-      started = now;
+  function setStatus(value,active) {
+    $('status').textContent=value;$('status').classList.toggle('on',!!active);
+  }
+  function begin(kind) {
+    if(state!=='idle') {
+      if(!window.confirm('Stop the current practice and start a new trial?'))return;
+      if(state==='running')advance(performance.now());
+      if(state!=='idle')finish('stopped');
+    }
+    trialBeingRated=null;$('trial-feedback').hidden=true;
+    mode=kind;
+    if(kind==='trial') {
+      bpm=trialRate;ratio=clamp(ratio,.3,.6);sessionLimitMs=trialMinutes*60000;
     } else {
-      started = now - pausedElapsed * 1000;
+      sessionLimitMs=minutes*60000;
     }
-    state = 'running';
-    setStatus('In session', true);
+    activeBpm=bpm;activeRatio=ratio;startBpm=bpm;
+    startedAt=new Date().toISOString();
+    elapsedMs=0;cycleMs=0;cycles=0;lastAudiblePhase='';
+    state='running';lastTime=performance.now();
+    setStatus(kind==='trial'?'In trial':'In session',true);
+    unlockAudio();refresh();updateTimer();drawPhase();frameId=requestAnimationFrame(frame);
+  }
+  function pause(away) {
+    if(state!=='running')return;
+    advance(performance.now());
+    if(state!=='running')return;
+    cancelAnimationFrame(frameId);frameId=0;state='paused';
+    setStatus('Paused',false);
+    $('guidance').textContent=away?'Paused while away. Resume when ready.':'Take your time. Resume when ready.';
     updateButtons();
-    refresh();
-    render(now);
+  }
+  function resume() {
+    if(state!=='paused')return;
+    state='running';lastTime=performance.now();lastAudiblePhase='';
+    setStatus(mode==='trial'?'In trial':'In session',true);
+    unlockAudio();updateButtons();frameId=requestAnimationFrame(frame);
+  }
+  function startOrPause() {
+    if(state==='idle')begin('normal');
+    else if(state==='paused')resume();
+    else pause(false);
+  }
+  function recordHistory(status) {
+    if(elapsedMs<5000)return;
+    history.unshift({
+      timestamp:startedAt,elapsedMs:Math.round(elapsedMs),breaths:cycles,
+      startBpm,endBpm:activeBpm,ratio:activeRatio,kind:mode,status,
+      targetMinutes:Math.round(sessionLimitMs/60000)
+    });
+    history=history.slice(0,80);safeSet(HISTORY_KEY,history);renderHistory();
+  }
+  function finish(status) {
+    if(state==='idle')return;
+    cancelAnimationFrame(frameId);frameId=0;
+    recordHistory(status);
+    const finishedMode=mode,finishedRate=startBpm,finishedMinutes=Math.round(sessionLimitMs/60000);
+    state='idle';mode='normal';
+    if(finishedMode==='trial' && status==='completed') {
+      trialBeingRated={rate:finishedRate,minutes:finishedMinutes};
+      $('trial-feedback').hidden=false;
+      $('explorer-panel').open=true;
+      document.querySelector('input[name="comfort"][value="3"]').checked=true;
+    }
+    if(immersive)setImmersive(false);
+    lastAudiblePhase='';cycleMs=0;
+    $('orb').style.transform='scale(.72)';
+    $('aura').style.transform='scale(.75)';
+    $('phase').textContent=status==='completed'?'Complete':'Breathe';
+    $('guidance').textContent=status==='completed'?'Your practice is complete.':'Follow the gentle rhythm of the circle';
+    $('footer').textContent=status==='completed'?'A moment well spent.':'Your pace. Your moment. No rush.';
+    setStatus(status==='completed'?'Complete':'Ready',false);
+    $('pending').textContent='';
+    elapsedMs=status==='completed'?sessionLimitMs:elapsedMs;
+    updateButtons();refresh();updateTimer();
+  }
+  function stop() {
+    if(state==='running')advance(performance.now());
+    if(state!=='idle')finish('stopped');
+  }
+  function setImmersive(enabled) {
+    immersive=!!enabled;
+    document.body.classList.toggle('is-immersive',immersive);
+    $('focus-bar').setAttribute('aria-hidden',String(!immersive));
+    if(immersive) {
+      if(document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(()=>{});
+      }
+    } else if(document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(()=>{});
+    }
+  }
+  function setTrialRate(input) {
+    const n=Number(input);if(!Number.isFinite(n))return;
+    trialRate=round1(clamp(n,MIN,TRIAL_MAX));
+    $('explorer-value').textContent=trialRate.toFixed(1);
+    $('explorer-slider').value=String(trialRate);
+    $('explorer-slider').style.setProperty('--pct',((trialRate-MIN)/(TRIAL_MAX-MIN)*100)+'%');
+    $('explorer-minus').disabled=trialRate<=MIN;
+    $('explorer-plus').disabled=trialRate>=TRIAL_MAX;
+    savePreferences();
+  }
+  function saveTrial() {
+    if(!trialBeingRated)return;
+    const checked=document.querySelector('input[name="comfort"]:checked');
+    if(!checked)return;
+    trials.unshift({
+      timestamp:new Date().toISOString(),
+      rate:trialBeingRated.rate,
+      minutes:trialBeingRated.minutes,
+      comfort:Number(checked.value)
+    });
+    trials=trials.slice(0,100);safeSet(TRIAL_KEY,trials);
+    trialBeingRated=null;$('trial-feedback').hidden=true;
+    renderTrials();
+  }
+  function renderTrials() {
+    const chart=$('trial-chart'),insight=$('trial-insight');
+    chart.replaceChildren();
+    const byRate=new Map();
+    trials.forEach(t=>{
+      const key=Number(t.rate).toFixed(1);
+      if(!byRate.has(key))byRate.set(key,[]);
+      byRate.get(key).push(t.comfort);
+    });
+    const rows=Array.from(byRate.entries()).map(([rate,scores])=>({
+      rate:Number(rate),average:scores.reduce((sum,n)=>sum+n,0)/scores.length,count:scores.length
+    })).sort((a,b)=>a.rate-b.rate);
+    if(!rows.length) {
+      const text=document.createElement('div');text.className='subtle';text.textContent='No comfort trials yet.';
+      chart.append(text);insight.textContent='Complete a trial to compare how breathing rates feel.';return;
+    }
+    rows.forEach(row=>{
+      const el=document.createElement('div');el.className='bar-item';
+      const label=document.createElement('span');label.textContent=row.rate.toFixed(1)+' BPM';
+      const bg=document.createElement('div');bg.className='bar-bg';
+      const fill=document.createElement('div');fill.className='bar-fill';fill.style.width=(row.average/5*100)+'%';bg.append(fill);
+      const score=document.createElement('span');score.textContent=row.average.toFixed(1)+'/5';
+      score.title=row.count+' trial'+(row.count===1?'':'s');
+      el.append(label,bg,score);chart.append(el);
+    });
+    const strongest=rows.slice().sort((a,b)=>b.average-a.average || b.count-a.count)[0];
+    insight.textContent='Highest reported comfort: '+strongest.rate.toFixed(1)+' BPM ('+strongest.average.toFixed(1)+'/5 across '+strongest.count+' trial'+(strongest.count===1?'':'s')+'). This is a subjective comparison, not a measured resonance frequency.';
+  }
+  function renderHistory() {
+    const list=$('history-list');list.replaceChildren();
+    $('history-sessions').textContent=String(history.length);
+    $('history-minutes').textContent=(history.reduce((sum,h)=>sum+h.elapsedMs,0)/60000).toFixed(1);
+    if(!history.length) {
+      const empty=document.createElement('div');empty.className='subtle';empty.textContent='No practice sessions yet.';list.append(empty);
+    } else {
+      history.slice(0,8).forEach(h=>{
+        const row=document.createElement('div');row.className='history-item';
+        const left=document.createElement('div');const title=document.createElement('strong');
+        const date=new Date(h.timestamp),dateText=Number.isNaN(date.getTime())?'Session':date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+        title.textContent=dateText;
+        const desc=document.createElement('small');desc.textContent=(h.kind==='trial'?'Comfort trial':'Practice')+' · '+(h.status==='completed'?'Completed':'Stopped');
+        left.append(title,desc);
+        const right=document.createElement('div');right.style.textAlign='right';
+        const durationText=document.createElement('strong');durationText.textContent=(h.elapsedMs/60000).toFixed(1)+' min';
+        const rateText=document.createElement('small');rateText.textContent=Number(h.endBpm).toFixed(1)+' BPM';
+        right.append(durationText,rateText);row.append(left,right);list.append(row);
+      });
+    }
+    $('history-export').disabled=!history.length;
+    $('history-clear').disabled=!history.length;
+  }
+  function csvCell(x) {return '"'+String(x==null?'':x).replace(/"/g,'""')+'"';}
+  function exportCSV() {
+    if(!history.length)return;
+    const columns=['timestamp','kind','status','elapsed_minutes','completed_breaths','start_BPM','end_BPM','inhale_fraction','target_minutes'];
+    const rows=history.map(h=>[
+      h.timestamp,h.kind,h.status,(h.elapsedMs/60000).toFixed(2),h.breaths,h.startBpm,h.endBpm,h.ratio,h.targetMinutes
+    ]);
+    const csv=[columns.join(','),...rows.map(row=>row.map(csvCell).join(','))].join('\r\n');
+    const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download='mindful-rhythm-sessions.csv';document.body.append(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
 
-  $('slider').addEventListener('input', e => setRate(e.target.value));
-  $('decrease').addEventListener('click', () => setRate(bpm - STEP));
-  $('increase').addEventListener('click', () => setRate(bpm + STEP));
-  document.querySelectorAll('.pattern').forEach(button =>
-    button.addEventListener('click', () => {
-      ratio = Number(button.dataset.ratio);
-      remember();
-      applyPattern();
-      refresh();
-    })
-  );
-  $('start').addEventListener('click', startOrPause);
-  $('stop').addEventListener('click', reset);
-  // Background animation frames are throttled on mobile. Pause instead of skipping breaths.
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) pause(true);
+  $('slider').addEventListener('input',e=>setRate(e.target.value));
+  $('decrease').addEventListener('click',()=>setRate(bpm-.1));
+  $('increase').addEventListener('click',()=>setRate(bpm+.1));
+  $('ratio-slider').addEventListener('input',e=>setRatio(Number(e.target.value)/100));
+  document.querySelectorAll('.pattern').forEach(button=>button.addEventListener('click',()=>setRatio(Number(button.dataset.ratio))));
+  $('session-duration').addEventListener('change',e=>{minutes=Number(e.target.value);savePreferences();updateTimer();});
+  $('start').addEventListener('click',startOrPause);
+  $('stop').addEventListener('click',stop);
+  $('focus-launch').addEventListener('click',()=>setImmersive(true));
+  $('focus-exit').addEventListener('click',()=>setImmersive(false));
+  $('focus-toggle').addEventListener('click',startOrPause);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape' && immersive)setImmersive(false);});
+  document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement && immersive)setImmersive(false);});
+  document.querySelectorAll('[data-theme-choice]').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.themeChoice)));
+  $('audio-toggle').addEventListener('change',e=>{
+    audioOn=e.target.checked;
+    if(audioOn) {unlockAudio();setAudioMessage('Soft tones play at the start of inhale and exhale.');}
+    else setAudioMessage('Audio cues are off.');
+    savePreferences();
   });
-  applyPattern();
-  reset();
+  $('volume-slider').addEventListener('input',e=>{
+    audioVolume=clamp(Number(e.target.value),0,100);
+    $('volume-label').textContent=audioVolume+'%';savePreferences();
+  });
+  $('explorer-slider').addEventListener('input',e=>setTrialRate(e.target.value));
+  $('explorer-minus').addEventListener('click',()=>setTrialRate(trialRate-.1));
+  $('explorer-plus').addEventListener('click',()=>setTrialRate(trialRate+.1));
+  $('trial-duration').addEventListener('change',e=>{trialMinutes=Number(e.target.value);savePreferences();});
+  $('trial-start').addEventListener('click',()=>begin('trial'));
+  $('trial-save').addEventListener('click',saveTrial);
+  $('trial-clear').addEventListener('click',()=>{
+    if(trials.length && window.confirm('Clear all recorded comfort trials on this device?')){
+      trials=[];safeSet(TRIAL_KEY,trials);renderTrials();
+    }
+  });
+  $('history-export').addEventListener('click',exportCSV);
+  $('history-clear').addEventListener('click',()=>{
+    if(history.length && window.confirm('Delete all practice history stored in this browser?')){
+      history=[];safeSet(HISTORY_KEY,history);renderHistory();
+    }
+  });
+  // Never try to catch up missed cycles after mobile browser/tab suspension.
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});
+
+  $('session-duration').value=String(minutes);
+  $('trial-duration').value=String(trialMinutes);
+  $('audio-toggle').checked=audioOn;
+  $('volume-slider').value=String(audioVolume);
+  $('volume-slider').style.setProperty('--pct',audioVolume+'%');
+  $('volume-label').textContent=audioVolume+'%';
+  setTheme(theme);
+  setTrialRate(trialRate);
+  refresh();
+  renderHistory();
+  renderTrials();
+  updateTimer();
+  setStatus('Ready',false);
 })();
+
 </script>
 </body>
 </html>
