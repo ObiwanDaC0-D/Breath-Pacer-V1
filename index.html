@@ -152,6 +152,9 @@ html[data-theme="moon"] body {
 html[data-theme="forest"] body {
  background:radial-gradient(ellipse at 50% 2%,rgba(255,255,255,.9),transparent 56%),linear-gradient(165deg,#f8faf2,#eaf2e6 65%,#e4eee0)
 }
+html[data-theme="sea"] .pattern.active {background:#276a65;border-color:#276a65;color:#fff}
+html[data-theme="forest"] .pattern.active {background:#396a51;border-color:#396a51;color:#fff}
+.eyebrow,.bpm {color:var(--accent-deep)}
 html[data-theme="moon"] .pattern.active {background:#697ca7;border-color:#697ca7;color:#fff}
 html[data-theme="moon"] .start {background:linear-gradient(115deg,#667caa,#505f94)}
 html[data-theme="forest"] .start {background:linear-gradient(115deg,#69977e,#41745c)}
@@ -534,10 +537,12 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
     ratio=Math.round(clamp(n,.3,.6)*100)/100;savePreferences();refresh();
   }
   function updateTimer() {
-    const seconds=sessionLimitMs>0?Math.max(0,(sessionLimitMs-elapsedMs)/1000):elapsedMs/1000;
+    const visibleLimit=state==='idle'?minutes*60000:sessionLimitMs;
+    const visibleElapsed=state==='idle'?0:elapsedMs;
+    const seconds=visibleLimit>0?Math.max(0,(visibleLimit-visibleElapsed)/1000):visibleElapsed/1000;
     const display=readableTime(seconds);
     $('clock').textContent=display;$('focus-clock').textContent=display;
-    $('progress-fill').style.width=sessionLimitMs>0?Math.min(100,elapsedMs/sessionLimitMs*100)+'%':'0%';
+    $('progress-fill').style.width=visibleLimit>0?Math.min(100,visibleElapsed/visibleLimit*100)+'%':'0%';
     if(state==='idle') $('timer-note').textContent='Time begins when you start breathing.';
     else if(mode==='trial') $('timer-note').textContent='Comfort trial · '+trialRate.toFixed(1)+' BPM';
     else $('timer-note').textContent=sessionLimitMs>0?'Time remaining in this session.':'Elapsed practice time.';
