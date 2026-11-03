@@ -257,6 +257,58 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
  *,*::before,*::after {scroll-behavior:auto!important;transition:none!important}
 }
 
+
+/* Mindful Rhythm 3.1 — quiet, collapsible interface */
+[hidden] {display:none!important}
+.app {padding-bottom:calc(40px + env(safe-area-inset-bottom))}
+.control-dock {
+  display:flex;align-items:stretch;gap:8px;
+  position:sticky;top:calc(8px + env(safe-area-inset-top));
+  z-index:20;margin:1px 0 20px;padding:9px;
+  border-radius:20px;border:1px solid var(--border);
+  background:var(--surface);
+  -webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);
+  box-shadow:0 12px 29px var(--shadow)
+}
+.control-dock .actions {display:flex;flex:1;min-width:0;gap:8px;margin:0}
+.control-dock .actions button {min-height:49px;font-size:13px;padding:11px 8px;border-radius:13px}
+.control-dock .start {flex:1.7;min-width:0;white-space:nowrap}
+.control-dock .stop {flex:.7;min-width:50px}
+.focus-action {
+ flex:0 0 auto;min-width:70px;border-radius:13px;border:1px solid var(--border);
+ background:var(--accent-soft);color:var(--accent-deep);font-size:13px;font-weight:680;
+ padding:8px 10px;min-height:49px;cursor:pointer
+}
+.focus-action span {font-size:18px;vertical-align:-2px;margin-right:2px}
+.panel-management {display:flex;justify-content:space-between;align-items:center;gap:8px;margin:2px 2px 12px}
+.panel-management-label {font-weight:660;color:var(--ink);font-size:13px}
+.panel-management-actions {display:flex;align-items:center;gap:5px;flex-shrink:0}
+.fold-link {border:0;background:transparent;color:var(--accent-deep);font-weight:630;font-size:11px;cursor:pointer;padding:8px 3px;min-height:36px}
+.fold-separator {color:var(--muted);font-size:12px}
+.section-fold {scroll-margin-top:100px}
+.section-fold > summary {min-height:59px}
+.section-fold > summary:focus-visible {outline:3px solid var(--focus);outline-offset:-4px;border-radius:15px}
+.section-fold .summary-value {font-size:11px;font-weight:540;color:var(--muted);text-align:right;margin-left:auto}
+.section-fold > summary::after {margin-left:6px;flex-shrink:0}
+.section-fold .details-body {padding-top:3px}
+.section-fold .durations {margin-bottom:0}
+.section-fold .durations .tile {background:var(--accent-soft);border-color:transparent}
+.section-fold .rate-control {margin-top:14px}
+.timer-visibility-row {display:flex;justify-content:space-between;align-items:center;gap:12px;margin:15px 0}
+.timer-display {border:1px solid var(--border);background:var(--accent-soft);padding:10px 12px 15px;border-radius:14px}
+.timer-display .timer-clock {font-size:27px}
+.timer-display .progress-track {margin-top:9px}
+body.is-immersive .control-dock {display:none!important}
+@media (max-width:380px) {
+  .control-dock {gap:5px;padding:7px}
+  .control-dock .actions {gap:5px}
+  .control-dock .actions button {font-size:12px;padding:11px 5px}
+  .control-dock .stop {min-width:46px}
+  .focus-action {font-size:12px;min-width:61px;padding:7px}
+  .focus-action span {margin-right:0;font-size:15px}
+  .panel-management-label {font-size:12px}
+  .fold-link {font-size:10.5px}
+}
 </style>
 </head>
 <body>
@@ -284,13 +336,38 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
     </div>
   </div>
   <div id="guidance" class="guidance" aria-live="off">Follow the gentle rhythm of the circle</div>
-  <section class="durations" aria-label="Calculated breathing durations">
+  <nav class="control-dock" aria-label="Breathing session controls">
+    <div class="actions">
+      <button id="start" type="button" class="start">Begin breathing</button>
+      <button id="stop" type="button" class="stop" disabled>Stop</button>
+    </div>
+    <button id="focus-launch" class="focus-action" type="button" aria-label="Enter immersive focus mode" title="Enter immersive focus mode">
+      <span aria-hidden="true">⛶</span> Focus
+    </button>
+  </nav>
+
+  <div class="panel-management">
+    <span class="panel-management-label">Customize your practice</span>
+    <div class="panel-management-actions">
+      <button id="fold-expand" class="fold-link" type="button">Expand all</button>
+      <span class="fold-separator" aria-hidden="true">·</span>
+      <button id="fold-collapse" class="fold-link" type="button">Collapse all</button>
+    </div>
+  </div>
+  <details class="panel section-fold" id="durations-panel">
+    <summary><span class="section-title">Inhale & exhale</span><span class="summary-value" id="durations-summary">4.0s in · 6.0s out</span></summary>
+    <div class="details-body">
+      <div class="durations" aria-label="Calculated breathing durations">
     <div class="tile"><div class="tilehead"><span class="dot" aria-hidden="true"></span> Inhale</div><div class="value"><span id="inhale-duration">4.0</span> <span class="unit">sec</span></div></div>
     <div class="tile"><div class="tilehead"><span class="dot out" aria-hidden="true"></span> Exhale</div><div class="value"><span id="exhale-duration">6.0</span> <span class="unit">sec</span></div></div>
-  </section>
-  <section class="panel" aria-label="Breathing rate controls">
+  </div>
+    </div></details>
+
+  <details class="panel section-fold" id="rate-panel" open>
+    <summary><span class="section-title">Breathing rate</span><span class="summary-value" id="rate-summary">6.0 BPM</span></summary>
+    <div class="details-body">
     <div class="panel-head">
-      <label class="label" for="slider">Breathing rate</label>
+      <label class="label" for="slider">Adjust pace</label>
       <div class="bpm"><output id="bpm" for="slider">6.0</output> <span class="unit">BPM</span></div>
     </div>
     <div class="helper">Choose your comfortable pace · 0.1 BPM precision</div>
@@ -302,9 +379,12 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
     <div class="ticks" aria-hidden="true"><span>4</span><span>6</span><span>8</span><span>10</span><span>12</span></div>
     <div class="ends"><span>Slower</span><span>Faster</span></div>
     <div id="pending" class="pending" role="status" aria-live="polite"></div>
-  </section>
-  <section class="panel">
-    <div class="label">Breathing pattern</div>
+  </div></details>
+
+  <details class="panel section-fold" id="pattern-panel">
+    <summary><span class="section-title">Breathing pattern</span><span class="summary-value" id="pattern-summary">40% / 60%</span></summary>
+    <div class="details-body">
+    <div class="label">Choose your breathing balance</div>
     <div class="patterns" role="group" aria-label="Inhale and exhale balance">
       <button type="button" class="pattern active" data-ratio="0.4" aria-pressed="true">Longer Exhale<span>40% in · 60% out</span></button>
       <button type="button" class="pattern" data-ratio="0.5" aria-pressed="false">Equal Breathing<span>50% in · 50% out</span></button>
@@ -316,18 +396,21 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
       <div class="ratio-values"><span>30% inhale</span><span>60% inhale</span></div>
       <div class="subtle">The selected ratio divides the full breath cycle into inhale and exhale, without a breath hold.</div>
     </div>
-  </section>
-  <div class="actions">
-    <button id="start" type="button" class="start">Begin breathing</button>
-    <button id="stop" type="button" class="stop" disabled>Stop</button>
-  </div>
+  </div></details>
 
-  <div class="quick-tools">
-    <button id="focus-launch" class="pill-button" type="button">◯ Immersive focus</button>
-  </div>
+  <details class="panel section-fold" id="timer-panel">
+    <summary><span class="section-title">Practice timer</span><span class="summary-value" id="timer-summary">5 min</span></summary>
+    <div class="details-body">
 
-  <section class="panel" aria-label="Practice timer">
-    <div class="panel-head"><div><div class="section-title">Practice timer</div><div class="subtle">Set a time or practice freely.</div></div><div id="clock" class="timer-clock" aria-label="Session time">0:00</div></div>
+    <div class="subtle">Choose a duration and optionally keep the time display out of sight.</div>
+    <div class="timer-visibility-row">
+      <label class="label" for="timer-visible">Show session timer</label>
+      <input id="timer-visible" class="toggle" type="checkbox" checked>
+    </div>
+    <div id="timer-display" class="timer-display">
+      <div class="row-between"><span class="subtle">Session time</span><div id="clock" class="timer-clock" aria-label="Session time">0:00</div></div>
+      <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
     <div class="timer-options">
       <label class="label" for="session-duration">Session length</label>
       <select id="session-duration" class="option-select">
@@ -338,11 +421,12 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
         <option value="20">20 minutes</option>
       </select>
     </div>
-    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+    
     <div id="timer-note" class="subtle" style="margin-top:8px">Time begins when you start breathing.</div>
-  </section>
+      </div>
+  </details>
 
-  <details class="panel" id="appearance-panel">
+  <details class="panel section-fold" id="appearance-panel">
     <summary><span class="section-title">Atmosphere & sound</span><span class="subtle">3 color themes · optional tones</span></summary>
     <div class="details-body">
       <div class="label">Choose an atmosphere</div>
@@ -364,7 +448,7 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
     </div>
   </details>
 
-  <details class="panel" id="explorer-panel">
+  <details class="panel section-fold" id="explorer-panel">
     <summary><span class="section-title">Breathing-rate explorer</span><span class="subtle">Compare comfort across rates</span></summary>
     <div class="details-body">
       <p class="subtle" style="margin:0">Explore slower breathing at your own pace. Compare how comfortable different rates feel; this is <strong>not</strong> an HRV measurement or a validated resonance-frequency assessment.</p>
@@ -396,7 +480,7 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
     </div>
   </details>
 
-  <details class="panel" id="history-panel">
+  <details class="panel section-fold" id="history-panel">
     <summary><span class="section-title">Practice history</span><span class="subtle">Private, on this device</span></summary>
     <div class="details-body">
       <div class="stats">
@@ -420,6 +504,8 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
   const HISTORY_KEY = 'mindful-rhythm-v3-history';
   const TRIAL_KEY = 'mindful-rhythm-v3-trials';
   const V2_KEY = 'mindful-rhythm-v2';
+  const PANELS_KEY = 'mindful-rhythm-v3-panel-state';
+  const PANEL_IDS = ['durations-panel','rate-panel','pattern-panel','timer-panel','appearance-panel','explorer-panel','history-panel'];
   const MIN = 4, MAX = 12, TRIAL_MAX = 8;
   const reducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
   const safeGet = key => {try{return JSON.parse(localStorage.getItem(key) || 'null');}catch(_){return null;}};
@@ -438,6 +524,7 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
   let audioOn = stored.audioOn === true;
   let audioVolume = clamp(number(stored.audioVolume,25),0,100);
   let minutes = [0,5,10,15,20].includes(stored.minutes) ? stored.minutes : 5;
+  let showTimer = stored.showTimer !== false;
   let trialRate = round1(clamp(number(stored.trialRate,6), MIN, TRIAL_MAX));
   let trialMinutes = [1,2,3].includes(stored.trialMinutes) ? stored.trialMinutes : 2;
   const rawHistory = safeGet(HISTORY_KEY), rawTrials = safeGet(TRIAL_KEY);
@@ -449,7 +536,30 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
   let audioContext=null, lastAudiblePhase='';
 
   function savePreferences() {
-    safeSet(PREF_KEY,{bpm,ratio,theme,audioOn,audioVolume,minutes,trialRate,trialMinutes});
+    safeSet(PREF_KEY,{bpm,ratio,theme,audioOn,audioVolume,minutes,trialRate,trialMinutes,showTimer});
+  }
+  function setupFolds() {
+    const prior=safeGet(PANELS_KEY);
+    PANEL_IDS.forEach(id=>{
+      const el=$(id);
+      el.open=prior && typeof prior[id]==='boolean' ? prior[id] : id==='rate-panel';
+      el.addEventListener('toggle',()=>{
+        const current={};
+        PANEL_IDS.forEach(panel=>{current[panel]=$(panel).open;});
+        safeSet(PANELS_KEY,current);
+      });
+    });
+  }
+  function setAllFolds(open) {
+    PANEL_IDS.forEach(id=>{$(id).open=open;});
+    const current={};PANEL_IDS.forEach(id=>{current[id]=open;});
+    safeSet(PANELS_KEY,current);
+  }
+  function updateTimerVisibility() {
+    $('timer-visible').checked=showTimer;
+    $('timer-display').hidden=!showTimer;
+    $('focus-clock').hidden=!showTimer;
+    $('timer-summary').textContent=(minutes===0?'Open-ended':minutes+' min')+(showTimer?'':' · hidden');
   }
   function setTheme(value) {
     if (!['sea','moon','forest'].includes(value)) return;
@@ -520,6 +630,9 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
     $('ratio-slider').value=String(Math.round(ratio*100));
     $('ratio-slider').style.setProperty('--pct',((ratio-.3)/.3*100)+'%');
     $('ratio-display').textContent=Math.round(ratio*100)+'% / '+Math.round((1-ratio)*100)+'%';
+    $('rate-summary').textContent=bpm.toFixed(1)+' BPM';
+    $('pattern-summary').textContent=Math.round(ratio*100)+'% / '+Math.round((1-ratio)*100)+'%';
+    $('durations-summary').textContent=d.inhale.toFixed(1)+'s in · '+d.exhale.toFixed(1)+'s out';
     applyPatternButtons();
     if(state==='idle') $('count').textContent=countdown(d.inhale);
     const pending=(bpm!==activeBpm || ratio!==activeRatio) && state!=='idle';
@@ -543,6 +656,11 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
     const display=readableTime(seconds);
     $('clock').textContent=display;$('focus-clock').textContent=display;
     $('progress-fill').style.width=visibleLimit>0?Math.min(100,visibleElapsed/visibleLimit*100)+'%':'0%';
+    updateTimerVisibility();
+    if(!showTimer) {
+      $('timer-note').textContent=state==='idle'?'Session time is hidden; your selected duration still applies.':sessionLimitMs>0?'Timer hidden · practice ends at the selected time.':'Timer hidden · open-ended practice.';
+      return;
+    }
     if(state==='idle') $('timer-note').textContent='Time begins when you start breathing.';
     else if(mode==='trial') $('timer-note').textContent='Comfort trial · '+trialRate.toFixed(1)+' BPM';
     else $('timer-note').textContent=sessionLimitMs>0?'Time remaining in this session.':'Elapsed practice time.';
@@ -779,6 +897,9 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
   $('ratio-slider').addEventListener('input',e=>setRatio(Number(e.target.value)/100));
   document.querySelectorAll('.pattern').forEach(button=>button.addEventListener('click',()=>setRatio(Number(button.dataset.ratio))));
   $('session-duration').addEventListener('change',e=>{minutes=Number(e.target.value);savePreferences();updateTimer();});
+  $('timer-visible').addEventListener('change',e=>{showTimer=e.target.checked;savePreferences();updateTimer();});
+  $('fold-expand').addEventListener('click',()=>setAllFolds(true));
+  $('fold-collapse').addEventListener('click',()=>setAllFolds(false));
   $('start').addEventListener('click',startOrPause);
   $('stop').addEventListener('click',stop);
   $('focus-launch').addEventListener('click',()=>setImmersive(true));
@@ -817,6 +938,7 @@ body.is-immersive .focus-bottom {display:flex;gap:9px;position:absolute;bottom:c
   // Never try to catch up missed cycles after mobile browser/tab suspension.
   document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});
 
+  setupFolds();
   $('session-duration').value=String(minutes);
   $('trial-duration').value=String(trialMinutes);
   $('audio-toggle').checked=audioOn;
