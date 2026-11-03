@@ -383,6 +383,15 @@ body[data-orb="galaxy"].is-immersive .scene::before {
  width:min(95vw,700px);height:min(85svh,700px);
  background:radial-gradient(circle,rgba(94,112,192,.25),rgba(87,85,169,.09) 46%,transparent 70%)
 }
+body[data-orb="galaxy"].is-immersive .orb {
+ width:min(390px,75vw,51svh);height:min(390px,75vw,51svh);
+ max-width:none;max-height:none
+}
+body[data-orb="galaxy"].is-immersive .aura {
+ width:min(450px,86vw,61svh);height:min(450px,86vw,61svh);
+ max-width:none;max-height:none
+}
+
 @media(max-width:380px) {
  body[data-orb="galaxy"] .scene {height:291px}
  body[data-orb="galaxy"] .orb {width:238px;height:238px}
@@ -964,8 +973,11 @@ body[data-orb="classic"] .orb-glass {display:none}
     const progress=inhaling?cycleMs/inhaleMs:(cycleMs-inhaleMs)/(d.exhale*1000);
     const ease=(1-Math.cos(Math.PI*clamp(progress,0,1)))/2;
     const scale=reducedMotion?(inhaling?0.86:0.72):inhaling?0.72+0.28*ease:1-0.28*ease;
-    galaxyBreathLight=inhaling ? .23+.77*ease : 1-.77*ease;
-    if(orbStyle==='galaxy' && (reducedMotion || motionMode==='still'))paintGalaxy();
+    galaxyBreathLight=reducedMotion ? .28 : inhaling ? .23+.77*ease : 1-.77*ease;
+    if(orbStyle==='galaxy' && motionMode==='still' && !reducedMotion) {
+      const moment=performance.now();
+      if(moment-galaxyLastFrame>=1000/20) {galaxyLastFrame=moment;paintGalaxy();}
+    }
     $('orb').style.transform='scale('+scale+')';
     $('aura').style.transform='scale('+(scale*1.08)+')';
     $('phase').textContent=inhaling?'Inhale':'Exhale';
