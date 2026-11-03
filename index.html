@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Mindful Rhythm">
 <meta name="description" content="A peaceful, adjustable breathing pacer with precise timing and a gentle sea-glass visual guide.">
-<title>Mindful Rhythm 3.0 · Find your calm</title>
+<title>Mindful Rhythm 3.1 · Find your calm</title>
 <style>
 :root {
   color-scheme:light;
@@ -336,7 +336,7 @@ body.is-immersive .control-dock {display:none!important}
     </div>
   </div>
   <div id="guidance" class="guidance" aria-live="off">Follow the gentle rhythm of the circle</div>
-  <nav class="control-dock" aria-label="Breathing session controls">
+  <div class="control-dock" role="group" aria-label="Breathing session controls">
     <div class="actions">
       <button id="start" type="button" class="start">Begin breathing</button>
       <button id="stop" type="button" class="stop" disabled>Stop</button>
@@ -344,7 +344,7 @@ body.is-immersive .control-dock {display:none!important}
     <button id="focus-launch" class="focus-action" type="button" aria-label="Enter immersive focus mode" title="Enter immersive focus mode">
       <span aria-hidden="true">⛶</span> Focus
     </button>
-  </nav>
+  </div>
 
   <div class="panel-management">
     <span class="panel-management-label">Customize your practice</span>
